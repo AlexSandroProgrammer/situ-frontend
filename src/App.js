@@ -16,7 +16,7 @@ const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
 const App = () => {
   // verificacion de autenticacion de usuario
-  const authStatus = 'authenticated'
+  const authStatus = 'not-authenticated'
   const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const storedTheme = useSelector((state) => state.theme)
 

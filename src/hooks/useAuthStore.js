@@ -1,33 +1,38 @@
+// hooks de react-redux para llamar el estado y seleccionarlo
 import { useDispatch, useSelector } from 'react-redux'
-// import { backendApi } from '../api'
-// import { clearErrorMessage, onChecking, onClearEvents, onLogin, onLogout } from '../store/'
+// llamado de la api del backend
+import { backendApiSitu } from '../api'
+// llamamos los reducers para manejar la autenticacion de los usuarios
+import { onChecking, onLogin, onLogout, clearErrorMessage } from '../store-toolkit'
 
 export const useAuthStore = () => {
   // // llamamos el slice de la auntenticacion mediante el useSelector
-  // const { status, errorMessage, user } = useSelector((state) => state.auth)
-  // // llamamos el metodo de despachar las acciones
-  // const dispatch = useDispatch()
+  // llamamos el slice de la auntenticacion mediante el useSelector
+  const { status, errorMessage, user } = useSelector((state) => state.auth)
+  // llamamos el metodo de despachar las acciones
+  const dispatch = useDispatch()
   // // creamos una funcion para hacer el dispatch del login
-  // const startLogin = async ({ email, password }) => {
-  //   // ponemos la aplicacion en un estado de carga
-  //   dispatch(onChecking())
-  //   try {
-  //     const { data } = await calendarApi.post('/auth', { email, password })
-  //     // * almacemos el token en el localStorage
-  //     localStorage.setItem('token', data.token)
-  //     // almacenamos el tiempo en que se guardo el token
-  //     localStorage.setItem('token-init-date', new Date().getTime())
-  //     // despues de realizar el login del usuario
-  //     // cambiamos el estado a autenticado despechando la accion de login
-  //     // y almacenamos la data del usuario en el estado del user
-  //     dispatch(onLogin({ name: data.name, uid: data.uid }))
-  //   } catch (error) {
-  //     dispatch(onLogout('Las credenciales son incorrectas'))
-  //     setTimeout(() => {
-  //       dispatch(clearErrorMessage())
-  //     }, 50)
-  //   }
-  // }
+  const startLogin = async ({ email, password }) => {
+    // ponemos la aplicacion en un estado de carga
+    dispatch(onChecking())
+    try {
+      const { data } = await backendApiSitu.post('/auth/local', { email, password })
+      console.log({ data })
+      // // * almacemos el token en el localStorage
+      // localStorage.setItem('token', data.token)
+      // // almacenamos el tiempo en que se guardo el token
+      // localStorage.setItem('token-init-date', new Date().getTime())
+      // // despues de realizar el login del usuario
+      // // cambiamos el estado a autenticado despechando la accion de login
+      // // y almacenamos la data del usuario en el estado del user
+      // dispatch(onLogin({ name: data.name, uid: data.uid }))
+    } catch (error) {
+      dispatch(onLogout('Las credenciales son incorrectas'))
+      setTimeout(() => {
+        dispatch(clearErrorMessage())
+      }, 50)
+    }
+  }
   // // creamos una funcion para realizar el registro del usuario
   // const startRegister = async ({ email, password, name }) => {
   //   dispatch(onChecking())
